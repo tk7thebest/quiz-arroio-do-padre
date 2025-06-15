@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Estação 3: Comunidade e Empreendedorismo</title>
   <style>
     body {
@@ -11,23 +11,66 @@
       padding: 0;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
+      align-items: center;
     }
+
     .container {
       background: #fff;
-      padding: 30px;
-      max-width: 700px;
-      margin-top: 40px;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 700px;
+      width: 90%;
+      padding: 30px;
+      box-sizing: border-box;
       position: relative;
+      min-height: 400px;
     }
-    h1 {
+
+    /* Abertura */
+    #intro {
       text-align: center;
       color: #1565c0;
+    }
+    #intro h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    #intro p {
+      font-size: 1.3rem;
+      margin-bottom: 2em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #startQuizBtn {
+      background-color: #1565c0;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #startQuizBtn:hover {
+      background-color: #0d3f7f;
+    }
+
+    /* Quiz */
+    #quiz {
+      display: none;
+    }
+    h1.quiz-title {
+      text-align: center;
+      color: #1565c0;
+      margin-bottom: 20px;
     }
     .question {
       font-size: 20px;
       margin: 20px 0;
+      color: #333;
     }
     .answers button {
       display: block;
@@ -68,27 +111,43 @@
       font-weight: bold;
       font-size: 15px;
       color: #0d47a1;
+      z-index: 999;
     }
     .result {
       margin-top: 20px;
       font-size: 18px;
       text-align: center;
+      color: #1565c0;
     }
   </style>
 </head>
 <body>
 
-<div class="counter">
-  ✅ Acertos: <span id="acertos">0</span><br>
-  ❌ Erros: <span id="erros">0</span>
-</div>
+  <div class="container">
 
-<div class="container">
-  <h1>Estação 3: Comunidade e Empreendedorismo</h1>
-  <div class="question" id="questionText">Carregando pergunta...</div>
-  <div class="answers" id="answersBox"></div>
-  <div class="result" id="resultBox"></div>
-</div>
+    <!-- Abertura -->
+    <div id="intro">
+      <h1>Estação 3: Comunidade e Empreendedorismo</h1>
+      <p>
+        Bem-vindo ao nosso quiz interativo! Aqui você vai testar seus conhecimentos sobre as cidades de Arroio do Padre e Pelotas, descobrindo curiosidades sobre a comunidade, cultura e economia locais. Prepare-se para aprender e se divertir respondendo perguntas que desafiam sua memória e percepção!
+      </p>
+      <button id="startQuizBtn">Começar o Quiz</button>
+    </div>
+
+    <!-- Quiz -->
+    <div id="quiz">
+      <h1 class="quiz-title">Estação 3: Comunidade e Empreendedorismo</h1>
+      <div class="question" id="questionText">Carregando pergunta...</div>
+      <div class="answers" id="answersBox"></div>
+      <div class="result" id="resultBox"></div>
+    </div>
+
+  </div>
+
+  <div class="counter" id="counter" style="display:none;">
+    ✅ Acertos: <span id="acertos">0</span><br>
+    ❌ Erros: <span id="erros">0</span>
+  </div>
 
 <script>
   const perguntas = [
@@ -155,6 +214,10 @@
   const resultBox = document.getElementById("resultBox");
   const acertosSpan = document.getElementById("acertos");
   const errosSpan = document.getElementById("erros");
+  const counterDiv = document.getElementById("counter");
+  const introDiv = document.getElementById("intro");
+  const quizDiv = document.getElementById("quiz");
+  const startQuizBtn = document.getElementById("startQuizBtn");
 
   let indiceAtual = 0;
   let acertos = 0;
@@ -183,6 +246,8 @@
           erros++;
           errosSpan.textContent = erros;
         }
+        // Bloqueia os botões para evitar múltiplos cliques
+        Array.from(answersBox.children).forEach(b => b.disabled = true);
         setTimeout(proximaPergunta, 700);
       };
       answersBox.appendChild(botao);
@@ -200,7 +265,12 @@
     }
   }
 
-  mostrarPergunta();
+  startQuizBtn.addEventListener("click", () => {
+    introDiv.style.display = "none";
+    quizDiv.style.display = "block";
+    counterDiv.style.display = "block";
+    mostrarPergunta();
+  });
 </script>
 
 </body>
